@@ -1,4 +1,4 @@
-FROM FROM williamyeh/ansible:debian8-onbuild
+FROM williamyeh/ansible:debian8-onbuild
 MAINTAINER Joaquin Salvarredy <joaquin@salvarredy.com.ar>
 ENV DEBIAN_FRONTEND noninteractive
 
