@@ -1,0 +1,23 @@
+---
+- name: ensure timezone is set in cli php.ini
+  lineinfile: dest=/etc/php5/cli/php.ini
+              regexp='date.timezone ='
+              line='date.timezone = {{ server.timezone }}'
+
+- name: enabling opcache cli
+  lineinfile: dest=/etc/php5/cli/php.ini
+              regexp=';opcache.enable_cli=0'
+              line='opcache.enable_cli=1'
+
+- name: change max input var
+  lineinfile: dest=/etc/php5/cli/php.ini
+              regexp='; max_input_vars = 1000'
+              line='max_input_vars = {{ php.max_input_vars }}'
+  when: php.max_input_vars is defined
+
+- name: change default charset
+  lineinfile: dest=/etc/php5/cli/php.ini
+              regexp='default_charset ='
+              line='default_charset = {{ php.default_charset }}'
+  when: php.default_charset is defined
+

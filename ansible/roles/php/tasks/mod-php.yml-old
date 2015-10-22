@@ -1,0 +1,58 @@
+---
+- name: ensure timezone is set in apache2 php.ini
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='date.timezone ='
+              line='date.timezone = {{ server.timezone }}'
+
+- name: enabling opcache
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp=';opcache.enable=0'
+              line='opcache.enable=1'
+
+- name: change max input var
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='; max_input_vars = 1000'
+              line='max_input_vars = {{ php.max_input_vars }}'
+  when: php.max_input_vars is defined
+
+- name: change httponlny
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='session.cookie_httponly ='
+              line='session.cookie_httponly = {{ php.cookie_httponly }}'
+  when: php.cookie_httponly is defined
+
+- name: change allowurl include
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='allow_url_include ='
+              line='allow_url_include = {{ php.allow_url_include }}'
+  when: php.allow_url_include is defined
+
+- name: change allowurl fopen
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='allow_url_fopen ='
+              line='allow_url_fopen = {{ php.allow_url_fopen }}'
+  when: php.allow_url_fopen is defined
+
+- name: change memory limit
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='memory_limit ='
+              line='memory_limit = {{ php.memory_limit }}'
+  when: php.memory_limit is defined
+
+- name: change default charset
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='default_charset ='
+              line='default_charset = {{ php.default_charset }}'
+  when: php.default_charset is defined
+
+- name: change upload max flesize
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='upload_max_filesize ='
+              line='upload_max_filesize = {{ php.upload_max_filesize }}'
+  when: php.upload_max_filesize is defined
+
+- name: change post max size
+  lineinfile: dest=/etc/php5/apache2/php.ini
+              regexp='post_max_size ='
+              line='post_max_size = {{ php.post_max_size }}'
+  when: php.post_max_size is defined

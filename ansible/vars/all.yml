@@ -1,0 +1,41 @@
+---
+server:
+    install: '1'
+    packages: [mc, iotop, vim, htop, ntpdate, sudo, nfs-common, clamav, unzip, aspell-es, zip, locales, atsar,openjdk-7-jre]
+    timezone: America/Argentina/Buenos_Aires
+    locale: es_AR.UTF-8
+
+apache:
+    install: '1'
+    serveradmin: toba@mydomain.edu
+    servername: toba.mydomain.edu
+    serveralias: www.toba.mydomain.edu
+    docroot: /data/local/toba/aplicacion/www
+    allowfrom: "200 192 172 127"
+    apptoba: toba
+    pathtoba: "/data/local/toba"
+    tobainstancia: produccion
+    pathlog: "/data/log"
+    instaladores: '1'
+    aliasinstaladores: "UPDATES"
+    pathinstaladores: "/data/instaladores"
+
+php:
+    install: '1'
+    packages: [php5-cli, php5-intl, php5-mcrypt, php5-imagick, php5-gd, php5-pgsql, php5-curl, php5-xmlrpc, php-apc]
+    use_managed_ini: true
+    expose_php: "Off"
+    memory_limit: "256M"
+    max_execution_time: "60"
+    max_input_time: "60"
+    max_input_vars: "15000"
+    realpath_cache_size: "32K"
+    upload_max_filesize: "32M"
+    post_max_size: "32M"
+    date_timezone: "America/Argentina/Buenos_Aires"
+    sendmail_path: "/usr/sbin/sendmail -t -i"
+    short_open_tag: false
+    error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
+    display_errors: "Off"
+    display_startup_errors: "Off"
+    default_charset: "ISO-8859-1"

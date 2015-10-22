@@ -1,0 +1,32 @@
+---
+- name: Set permissions on socket - owner
+  lineinfile: "dest=/etc/php5/fpm/pool.d/www.conf state=present regexp='^;?listen.owner' line='listen.owner = www-data'"
+
+- name: Set permissions on socket - group
+  lineinfile: "dest=/etc/php5/fpm/pool.d/www.conf state=present regexp='^;?listen.group' line='listen.group = www-data'"
+
+- name: Set permissions on socket - mode
+  lineinfile: "dest=/etc/php5/fpm/pool.d/www.conf state=present regexp='^;?listen.mode' line='listen.mode = 0660'"
+  notify: restart php5-fpm
+
+- name: ensure timezone is set in fpm php.ini
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp='date.timezone ='
+              line='date.timezone = {{ server.timezone }}'
+- name: enabling opcache
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp=';opcache.enable=0'
+              line='opcache.enable=1'
+
+- name: change max input var
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp='; max_input_vars = 1000'
+              line='max_input_vars = {{ php.max_input_vars }}'
+  when: php.max_input_vars is defined
+
+- name: change default charset
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp='default_charset ='
+              line='default_charset = {{ php.default_charset }}'
+  when: php.default_charset is defined
+
