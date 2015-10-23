@@ -1,7 +1,7 @@
 ---
 server:
     install: '1'
-    packages: [mc, iotop, vim, htop, ntpdate, sudo, nfs-common, clamav, unzip, aspell-es, zip, locales, atsar,openjdk-7-jre]
+    packages: [mc, vim, sudo, unzip, aspell-es, locales, openjdk-7-jre]
     timezone: America/Argentina/Buenos_Aires
     locale: es_AR.UTF-8
 
@@ -22,7 +22,7 @@ apache:
 
 php:
     install: '1'
-    packages: [php5-cli, php5-intl, php5-mcrypt, php5-imagick, php5-gd, php5-pgsql, php5-curl, php5-xmlrpc, php-apc]
+    packages: [php5-mcrypt, php5-imagick, php5-gd, php5-pgsql, php5-curl, php5-xmlrpc]
     use_managed_ini: true
     expose_php: "Off"
     memory_limit: "256M"

@@ -1,34 +1,40 @@
-# toba-web
-Contenedor  que sirve como base para proyectos basados en SIU-Toba.
+# Toba-web 
+Contenedor que tiene todas las dependencias para correr proyectos basados en SIU-Toba.
+Basado en un Debian 8 con Apache y php. 
 
 ## Uso
 
 Para la base de datos crear un docker con postgres:
 
 ```
-  docker run --name postgres-9.4 -e POSTGRES_PASSWORD=testing -p 5432:5432 -d postgres:9.4.4
+  docker run -d --name postgres-9.4 \
+	-e POSTGRES_PASSWORD=testing \
+	-p 5432:5432 postgres:9.4.4
 ```
 
-Luego para arrancar tener en cuenta el volume donde se encuentran los datos, recordar la estructra que tiene que tener el /data:
+Para arrancar tener en cuenta el volume donde se encuentran los datos del proyecto.
+La estructra que tiene el `/data`:
 
-* /data/local/app-toba: donde esta la aplicacion toba
-* /data/log: donde estan los archivos de logs
-* /data/instaladores: para poder hacer una instalacion o un upgrade
+* `/data/local/app-toba`: donde esta la aplicacion toba
+* `/data/log`: donde estan los archivos de logs
+* `/data/instaladores`: para poder hacer una instalacion o un upgrade
 
 
 ```
-  docker run -d --link postgres-9.4:db -p 8080:80 -v `pwd`/toba-data/:/data jsalvarredy/toba-web
+  docker run -d --link postgres-9.4:db \
+	-p 8080:80 -v `pwd`/toba-data/:/data \
+	jsalvarredy/toba-web
 ```
 
 ## Reconfigurando docker con Ansible
 
-Si se le pasa el parmetro RECONFIGURE=1 y un archivo all.yml con los siguiente estructura podemos reconfigurar el docker sin volver a construirlo:
+Si se le pasa el parámetro `RECONFIGURE=1` y un archivo `all.yml` con los siguiente estructura, reconfiguramos el docker sin necesidad de volver a construirlo:
 ```
 ---
 server:
     install: '1'
     docker: 1 # Poner en 1 cuando se construya un docker
-    packages: [mc, iotop, vim, htop, ntpdate, sudo, nfs-common, clamav, unzip, aspell-es, zip, locales, atsar,openjdk-7-jre]
+    packages: [mc, vim, sudo, aspell-es, zip, locales, openjdk-7-jre]
     timezone: America/Argentina/Buenos_Aires
     locale: es_AR.UTF-8
 
@@ -49,7 +55,7 @@ apache:
 
 php:
     install: '1'
-    packages: [php5-cli, php5-intl, php5-mcrypt, php5-imagick, php5-gd, php5-pgsql, php5-curl, php5-xmlrpc, php-apc]
+    packages: [php5-mcrypt, php5-gd, php5-pgsql, php5-curl, php5-xmlrpc]
     use_managed_ini: true
     expose_php: "Off"
     memory_limit: "256M"
@@ -68,7 +74,7 @@ php:
     default_charset: "ISO-8859-1"
 ```
 
-Luego corremos el contenedor para que se reconfigure con los nuevos parametros:
+Corremos el contenedor para que se reconfigure con los nuevos parámetros:
 
 ```
     docker run -d \
